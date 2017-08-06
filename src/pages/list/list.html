@@ -3,21 +3,28 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>List</ion-title>
+    <ion-title>Deleted Items</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
-      <ion-icon [name]="item.icon" item-left></ion-icon>
-      {{item.title}}
-      <div class="item-note" item-right>
-        {{item.note}}
-      </div>
-    </button>
+    <ion-item-sliding *ngFor="let item of items">
+      <ion-item>
+        {{item.title}}
+      </ion-item>>
+      <ion-item-options side="right" (ionSwipe) = "restoreitem(item)">
+        <button ion-button color="secondary" expandable (click) = "restoreitem(item)">
+          <ion-icon name="text"></ion-icon>
+          Restore
+        </button>
+      </ion-item-options>
+      <ion-item-options side="left" (ionSwipe) = "clearitem(item)">
+        <button ion-button color="danger" expandable (click) = "clearitem(item)">
+          <ion-icon name="text"></ion-icon>
+          Clear
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
-  <div *ngIf="selectedItem" padding>
-    You navigated here from <b>{{selectedItem.title}}</b>
-  </div>
 </ion-content>

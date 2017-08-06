@@ -7,12 +7,27 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h3>Ionic Menu Starter</h3>
-
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
-
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+<ion-content>
+  <ion-list>
+  <ion-item-group reorder="true"  (ionItemReorder)="reorderItems($event)">
+    <ion-item-sliding *ngFor="let item of items"> 
+      <ion-item *ngIf="item.editmode === false">
+        <label (click) = "enableEditing(item);">{{item.title}}</label>
+        <input type="checkbox" checked="{{item.checked}}" (click)="checkitem(item)">
+      </ion-item>
+      <ion-item *ngIf="item.editmode === true">
+        <ion-input type="text" value="" [(ngModel)]="newvalue" (keyup.enter)="edititem(item)"></ion-input>
+      </ion-item>
+      <ion-item-options side="left" (ionSwipe)="deleteitem(item)">
+        <button ion-button color="danger" expandable (click) = "deleteitem(item)">
+          <ion-icon name="text"></ion-icon>
+          Delete
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-item-group>
+    <ion-item>
+      <ion-input type="text" value="" placeholder="Add an item.." [(ngModel)]="newitem" (keyup.enter)="additem()"></ion-input>
+    </ion-item>
+  </ion-list>
 </ion-content>
