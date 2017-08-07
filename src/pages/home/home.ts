@@ -42,11 +42,13 @@ export class HomePage {
   }
 
   additem (){
-    let newitemObj = { title: this.newitem, checked: "", editmode: false, position: this.items.length + 1};
-    this.items.push(newitemObj);
-    this.newitem = '';
+    if (this.newitem && this.newitem.trim() !== ""){
+      let newitemObj = { title: this.newitem, checked: "", editmode: false, position: this.items.length + 1};
+      this.items.push(newitemObj);
+      this.newitem = '';
 
-    this.saveToStorage();
+      this.saveToStorage();
+    } 
   }
 
   enableEditing (item) {
