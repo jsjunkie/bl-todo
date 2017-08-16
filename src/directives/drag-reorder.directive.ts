@@ -1,6 +1,5 @@
 import { Directive, ElementRef, Input, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/concatmap';		
 
@@ -46,17 +45,14 @@ export class DragReorderDirective implements AfterViewInit {
 		});
 
 		itemmousedowns.subscribe(event => {
-			var timestamp = event["timeStamp"];
 			console.log('mouse down');
 		});
 
 		itemmouseups.subscribe(event => {
-			//element.draggable = false;
 			console.log('mouse up');
 		});
 
 		dragstarts.subscribe(event => {
-			//element.draggable = true;
 			console.log('drag started')
 		});
 
@@ -68,7 +64,7 @@ export class DragReorderDirective implements AfterViewInit {
 						});
 
 		drags.subscribe(drag => {
-			var next, previous, itemindex = this.dragIndex;
+			var next, previous, itemindex = +this.dragIndex;
 			console.log('dragged', drag);
 			let dragelement = this.elementRef.nativeElement;
 			dragelement.style.position = "fixed";
@@ -93,12 +89,12 @@ export class DragReorderDirective implements AfterViewInit {
 				for (var j = 1; j <= i; j++){
 					next = next.nextSibling;
 				}
-
-				this.endIndex = itemindex + (i - 1);
-
-				if (next.children){
+				
+				if (next && next.children){
 					var nextItem = next.children[0];
 					nextItem.style.marginTop = "47px";
+					this.endIndex = itemindex + (i - 1);
+
 				}
 				
 			}
@@ -112,11 +108,10 @@ export class DragReorderDirective implements AfterViewInit {
 					previous = previous.previousSibling;
 				}
 
-				this.endIndex = itemindex - (i - 1);
-
 				if (previous && previous.children){
 					var previousItem = previous.children[0];
 					previousItem.style.marginBottom = "47px";
+					this.endIndex = itemindex - (i - 1);
 				}
 				
 			}			
