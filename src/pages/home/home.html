@@ -9,9 +9,8 @@
 
 <ion-content>
   <ion-list>
-  <ion-item-group reorder="true"  (ionItemReorder)="reorderItems($event)">
-    <ion-item-sliding *ngFor="let item of items"> 
-      <ion-item *ngIf="item.editmode === false">
+    <ion-item-sliding *ngFor="let item of items; let i = index;"> 
+      <ion-item *ngIf="item.editmode === false" drag-reorder dragIndex="{{i}}">
         <label (click) = "enableEditing(item);">{{item.title}}</label>
         <input type="checkbox" checked="{{item.checked}}" (click)="checkitem(item)">
       </ion-item>
@@ -25,7 +24,6 @@
         </button>
       </ion-item-options>
     </ion-item-sliding>
-  </ion-item-group>
     <ion-item>
       <ion-input type="text" value="" placeholder="Add an item.." [(ngModel)]="newitem" (keyup.enter)="additem()"></ion-input>
     </ion-item>
