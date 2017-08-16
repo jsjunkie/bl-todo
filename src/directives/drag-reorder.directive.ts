@@ -106,6 +106,7 @@ export class DragReorderDirective implements AfterViewInit {
 					next = next.nextSibling;
 					if (next.nodeName==="#text"){
 						next = next.nextSibling;
+						break;
 					}
 				}
 				
@@ -125,6 +126,7 @@ export class DragReorderDirective implements AfterViewInit {
 				for (var j = 1; j <= i; j++){
 					if (previous.previousSibling.nodeName==='#comment'){
 						previousNone = true;
+						break;
 					} else{
 						previous = previous.previousSibling;
 					}
