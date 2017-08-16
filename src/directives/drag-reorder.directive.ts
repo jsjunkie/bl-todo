@@ -1,15 +1,18 @@
-import { Directive, ElementRef, Input, AfterViewInit } from '@angular/core';
+import { Directive, ElementRef, Input, AfterViewInit, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/concatmap';		
 
 @Directive({
-	selector: '[drag-reorder]'
+	selector: '[drag-reorder]',
+	outputs: ['draggingDone']
 })
 
 export class DragReorderDirective implements AfterViewInit {
 	@Input() dragIndex : number;
-	endIndex : number;
+	endIndex : number = this.dragIndex;
+
+	draggingDone = new EventEmitter();
 
 	constructor(private elementRef : ElementRef) {
 
@@ -40,7 +43,7 @@ export class DragReorderDirective implements AfterViewInit {
 					if (!mouseupdone && !mousemovedone) {
 						observer.next(mousedown);
 					}
-				}, 1000);
+				}, 500);
 			})
 		});
 
@@ -50,10 +53,24 @@ export class DragReorderDirective implements AfterViewInit {
 
 		itemmouseups.subscribe(event => {
 			console.log('mouse up');
+			if (this.endIndex || this.endIndex === 0) {
+				this.draggingDone.emit({from: +this.dragIndex, to: +this.endIndex})
+				this.elementRef.nativeElement.style.position = "static";
+				this.elementRef.nativeElement.style.top = "";
+				this.elementRef.nativeElement.children[0].style.borderBottom = "1px solid #dedede";
+				this.elementRef.nativeElement.children[0].style.borderTop = "1px solid #dedede";
+
+				var allSiblings = this.elementRef.nativeElement.parentElement.parentElement.children;
+				resetMargins(allSiblings);
+
+			}
 		});
 
 		dragstarts.subscribe(event => {
-			console.log('drag started')
+			console.log('drag started');
+			let dragelement = this.elementRef.nativeElement;
+			dragelement.children[0].style.borderBottom = "2px solid #dedede";
+			dragelement.children[0].style.borderTop = "2px solid #dedede";
 		});
 
 		var drags = dragstarts.concatMap(mousedown => {
@@ -63,54 +80,64 @@ export class DragReorderDirective implements AfterViewInit {
 								})
 						});
 
+		function resetMargins (allSiblings) {
+				for (var i = 0; i < allSiblings.length; i++) {
+					allSiblings[i].children[0].style.marginTop =	 "0px";
+					allSiblings[i].children[0].style.marginBottom = "0px";
+				}
+			}
+
 		drags.subscribe(drag => {
-			var next, previous, itemindex = +this.dragIndex;
+			var next, previous, itemindex = +this.dragIndex, previousNone = false;
 			console.log('dragged', drag);
 			let dragelement = this.elementRef.nativeElement;
 			dragelement.style.position = "fixed";
 			dragelement.style.top = 55 + (47*itemindex) + drag.moved + "px";
 			dragelement.style.zIndex = 100;
+			
 			var allSiblings = dragelement.parentElement.parentElement.children;
 
-			function resetMargins () {
-				for (var i = 0; i < allSiblings.length; i++) {
-					if (allSiblings[i].localName === "ion-item-sliding") {
-						allSiblings[i].children[0].style.marginTop =	 "0px";
-						allSiblings[i].children[0].style.marginBottom = "0px";
-					}
-				}
-			}
-
 			if (drag.moved > 0){
-				resetMargins();
+				resetMargins(allSiblings);
 
 				var i = Math.ceil((drag.moved - 25)/47) + 1;
 				next = dragelement.parentElement;
 				for (var j = 1; j <= i; j++){
 					next = next.nextSibling;
+					if (next.nodeName==="#text"){
+						next = next.nextSibling;
+					}
 				}
 				
 				if (next && next.children){
 					var nextItem = next.children[0];
 					nextItem.style.marginTop = "47px";
 					this.endIndex = itemindex + (i - 1);
-
 				}
 				
 			}
 
 			if (drag.moved < 0){
-				resetMargins();
+				resetMargins(allSiblings);
 
 				var i = Math.ceil((-drag.moved - 25)/47) + 1;
 				previous = dragelement.parentElement;
 				for (var j = 1; j <= i; j++){
-					previous = previous.previousSibling;
+					if (previous.previousSibling.nodeName==='#comment'){
+						previousNone = true;
+					} else{
+						previous = previous.previousSibling;
+					}
 				}
 
 				if (previous && previous.children){
 					var previousItem = previous.children[0];
-					previousItem.style.marginBottom = "47px";
+					if (previousNone){
+						previousItem.style.marginTop = "47px";
+					} else{
+						previousItem.style.marginBottom = "47px";
+					}
+
 					this.endIndex = itemindex - (i - 1);
 				}
 				

@@ -10,7 +10,7 @@
 <ion-content>
   <ion-list>
     <ion-item-sliding *ngFor="let item of items; let i = index;"> 
-      <ion-item *ngIf="item.editmode === false" drag-reorder dragIndex="{{i}}">
+      <ion-item *ngIf="item.editmode === false" drag-reorder dragIndex="{{i}}" (draggingDone)="reorderItems($event)">
         <label (click) = "enableEditing(item);">{{item.title}}</label>
         <input type="checkbox" checked="{{item.checked}}" (click)="checkitem(item)">
       </ion-item>

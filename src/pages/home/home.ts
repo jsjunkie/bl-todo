@@ -57,7 +57,6 @@ export class HomePage {
   }
 
   edititem (item) {
-    debugger;
     var indexOfItem = this.items.indexOf(item);
     this.items[indexOfItem].title = this.newvalue;
     this.items[indexOfItem].editmode = false;
@@ -77,12 +76,14 @@ export class HomePage {
   }
 
   reorderItems(indexes) {
-    let element = this.items[indexes.from];
-    this.items.splice(indexes.from, 1);
-    this.items.splice(indexes.to, 0, element);
-
-    this.positionitems();
-    this.saveToStorage();
+    if (indexes.from !== indexes.to) {
+      let element = this.items[indexes.from];
+      this.items.splice(indexes.from, 1);
+      this.items.splice(indexes.to, 0, element);
+      
+      this.positionitems();
+      this.saveToStorage();
+    }
   }
 
   positionitems (){
@@ -92,7 +93,6 @@ export class HomePage {
   }
 
   checkitem (item) {
-    debugger;
     item.checked = (item.checked === "") ? "checked" : "";
 
     this.saveToStorage();
