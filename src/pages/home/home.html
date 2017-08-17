@@ -11,11 +11,11 @@
   <ion-list>
     <ion-item-sliding *ngFor="let item of items; let i = index;"> 
       <ion-item *ngIf="item.editmode === false" drag-reorder dragIndex="{{i}}" (draggingDone)="reorderItems($event)">
-        <label (click) = "enableEditing(item);">{{item.title}}</label>
+        <label style="padding-right:5px;" (click) = "enableEditing(item);">{{item.title}}</label>
         <input type="checkbox" checked="{{item.checked}}" (click)="checkitem(item)">
       </ion-item>
       <ion-item *ngIf="item.editmode === true">
-        <ion-input type="text" value="" [(ngModel)]="newvalue" (keyup.enter)="edititem(item)"></ion-input>
+        <ion-input autofocus type="text" value="" [(ngModel)]="newvalue" (keyup.enter)="edititem(item)" (blur)="edititem(item)"></ion-input>
       </ion-item>
       <ion-item-options side="left" (ionSwipe)="deleteitem(item)">
         <button ion-button color="danger" expandable (click) = "deleteitem(item)">

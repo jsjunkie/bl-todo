@@ -69,8 +69,8 @@ export class DragReorderDirective implements AfterViewInit {
 		dragstarts.subscribe(event => {
 			console.log('drag started');
 			let dragelement = this.elementRef.nativeElement;
-			dragelement.children[0].style.borderBottom = "2px solid #dedede";
-			dragelement.children[0].style.borderTop = "2px solid #dedede";
+			dragelement.children[0].style.borderBottom = "3px solid #dedede";
+			dragelement.children[0].style.borderTop = "3px solid #dedede";
 		});
 
 		var drags = dragstarts.concatMap(mousedown => {

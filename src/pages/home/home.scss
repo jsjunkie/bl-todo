@@ -30,5 +30,12 @@ input[type="text"] {
 
 .item-inner {
 	border-top: 1px solid #dedede;
-    border-bottom: 1px solid #dedede;
+  border-bottom: 1px solid #dedede;
+  box-shadow: none !important;
+  border-bottom-color: #dedede !important
+}
+
+ion-item {
+  border-bottom-color: #dedede !important;
+  box-shadow: none !important;
 }
