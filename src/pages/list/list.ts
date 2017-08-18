@@ -18,7 +18,6 @@ export class ListPage {
     let that = this;
 
     this.storage.get('deleteditems').then(function (result) {
-      debugger;
       if (result){
         that.items = JSON.parse(result);
       }
