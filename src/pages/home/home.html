@@ -25,7 +25,7 @@
       </ion-item-options>
     </ion-item-sliding>
     <ion-item>
-      <ion-input type="text" value="" placeholder="Add an item.." [(ngModel)]="newitem" (keyup.enter)="additem()"></ion-input>
+      <ion-input type="text" value="" placeholder="Add an item.." [(ngModel)]="newitem" (keyup.enter)="additem()" (blur)="additem()"></ion-input>
     </ion-item>
   </ion-list>
 </ion-content>
