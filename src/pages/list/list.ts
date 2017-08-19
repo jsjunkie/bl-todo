@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
@@ -6,13 +6,17 @@ import { Storage } from '@ionic/storage';
   selector: 'page-list',
   templateUrl: 'list.html'
 })
-export class ListPage {
+export class ListPage implements OnInit {
   selectedItem: any;
   icons: string[];
   items: Array<{title: string, checked: string}>;
   homeitems: Array<{title: string, checked: string, editmode: boolean, position: number}>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
+    
+  }
+
+  ngOnInit() : void {
     this.items = [];
     this.homeitems = [];
     let that = this;

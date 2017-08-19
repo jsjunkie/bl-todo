@@ -1,6 +1,6 @@
 {
   "name": "bl-todo",
-  "app_id": "",
+  "app_id": "e7106b22",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}

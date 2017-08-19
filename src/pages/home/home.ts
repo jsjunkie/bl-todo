@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
@@ -6,14 +6,18 @@ import { Storage } from '@ionic/storage';
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage {
+export class HomePage implements OnInit {
   items: Array<{title: string, checked: string, editmode: boolean, position: number}>;
   deleteditems: Array<{title: string, checked: string, editmode: boolean, position: number}>;
   newitem: string;
   newvalue: string;
   
   constructor(public navCtrl: NavController, private storage: Storage) {
-  	this.items = [];
+  	
+  }
+
+  ngOnInit() : void {
+    this.items = [];
     this.deleteditems = [];
     let that = this;
     this.storage.get('items').then(function (result){
